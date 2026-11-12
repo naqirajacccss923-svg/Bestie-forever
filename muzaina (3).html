@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Surprise for Muzaina ❤️</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #ffb6cf, #e6b5ff, #ffd6e7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.card {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 28px;
+    padding: 35px 22px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(150,40,100,0.2);
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    color: #d63384;
+    font-size: clamp(27px, 7vw, 38px);
+    margin: 15px 0;
+}
+
+p {
+    color: #80516b;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.emoji {
+    font-size: 65px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+button {
+    border: none;
+    background: linear-gradient(135deg, #ff5b98, #bc48cf);
+    color: white;
+    padding: 15px 25px;
+    font-size: 16px;
+    border-radius: 40px;
+    margin-top: 25px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px #e5a0c6;
+    transition: .3s;
+    max-width: 100%;
+}
+
+button:hover {
+    transform: scale(1.06);
+}
+
+#surprise {
+    display: none;
+    animation: reveal 1s ease;
+}
+
+@keyframes reveal {
+    from {opacity: 0; transform: scale(.8);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+.name {
+    color: #e04491;
+    font-weight: bold;
+}
+
+.message {
+    margin-top: 20px;
+    background: #fff0f6;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    animation: floatUp 6s linear forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+#confetti {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.footer {
+    margin-top: 25px;
+    color: #c66b9b;
+    font-size: 13px;
+}
+
+@media(max-width: 400px) {
+    .card { padding: 28px 17px; }
+    p { font-size: 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="card">
+
+    <div class="emoji" id="gift">🎁</div>
+
+    <h1>Hey Muzaina! 💗</h1>
+
+    <p>
+        Someone has a little surprise for you...
+        <br>
+        Are you ready to open it? 🥹
+    </p>
+
+    <button id="openBtn" onclick="openSurprise()">
+        Open Your Surprise 💌
+    </button>
+
+    <div id="surprise">
+
+        <div class="emoji">🎉💖🌸</div>
+
+        <h1>Surprise, Bestie!</h1>
+
+        <p>
+            Dear <span class="name">Muzaina Kanwal</span>,
+        </p>
+
+        <div class="message">
+
+            <p>
+                I just want you to know something...
+                ❤️
+            </p>
+
+            <p>
+                You are one of the most precious people in my life.
+                I don't know what I did to deserve a bestie like you,
+                but I am genuinely lucky to have you.
+            </p>
+
+            <p>
+                Your smile matters to me.
+                Your happiness matters to me.
+                Your little problems matter to me.
+                And YOU matter to me more than you can imagine.
+            </p>
+
+            <p>
+                Life may change, situations may change,
+                but I hope our friendship always remains
+                something beautiful. 🫂
+            </p>
+
+            <h2 style="color:#d63384; margin-top:20px;">
+                YOU ARE MY FOREVER BESTIE! 💕
+            </h2>
+
+        </div>
+
+        <h2 style="color:#d63384; margin-top:25px;">
+            One Promise? 🥺
+        </h2>
+
+        <p>
+            Never forget how special you are.
+            Keep smiling, keep shining!
+        </p>
+
+        <button onclick="celebrateAgain()">
+            Celebrate Again 🎊
+        </button>
+
+    </div>
+
+    <div class="footer">
+        Made with unlimited love, just for you ❤️
+    </div>
+
+</div>
+
+<script>
+// Confetti animation
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+let pieces = [];
+let animationRunning = false;
+
+function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function launchConfetti() {
+    const colors = [
+        "#ff4081", "#ffd700", "#9c27b0",
+        "#00c9a7", "#ff7f50", "#6495ed"
+    ];
+
+    for (let i = 0; i < 180; i++) {
+        pieces.push({
+            x: Math.random() * window.innerWidth,
+            y: -Math.random() * window.innerHeight,
+            size: Math.random() * 9 + 4,
+            speed: Math.random() * 4 + 2,
+            rotation: Math.random() * 360,
+            spin: Math.random() * 8 - 4,
+            color: colors[Math.floor(Math.random() * colors.length)]
+        });
+    }
+
+    if (!animationRunning) {
+        animationRunning = true;
+        animateConfetti();
+    }
+}
+
+function animateConfetti() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    pieces.forEach((p) => {
+        p.y += p.speed;
+        p.x += Math.sin(p.y * 0.02) * 1.5;
+        p.rotation += p.spin;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2,
+                     p.size, p.size * 0.65);
+        ctx.restore();
+    });
+
+    pieces = pieces.filter(p => p.y < window.innerHeight + 20);
+
+    if (pieces.length > 0) {
+        requestAnimationFrame(animateConfetti);
+    } else {
+        animationRunning = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+// Open surprise
+function openSurprise() {
+    document.getElementById("surprise").style.display = "block";
+    document.getElementById("openBtn").style.display = "none";
+    document.getElementById("gift").style.display = "none";
+
+    launchConfetti();
+    createHearts();
+
+    document.getElementById("surprise").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+// Celebrate again
+function celebrateAgain() {
+    launchConfetti();
+    createHearts();
+}
+
+// Floating hearts
+function createHearts() {
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = ["❤️", "💗", "💕", "💖", "🌸"][
+                Math.floor(Math.random() * 5)
+            ];
+
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (18 + Math.random() * 22) + "px";
+            heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 8500);
+        }, i * 120);
+    }
+}
+</script>
+
+</body>
+</html>
